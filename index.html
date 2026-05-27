@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Sharon 💕</title>
+    <!-- Pixel font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="particle-container"></div>
+    
+    <!-- Login Screen Overlay -->
+    <div id="login-overlay" class="modal-overlay">
+        <div class="login-card card">
+            <h2>SHARONNN'S REALM 💕</h2>
+            <p class="login-subtitle">Speak the secret password to unlock this wonderland...</p>
+            <div class="password-container">
+                <input type="password" id="password-input" class="pixel-input" placeholder="Type password..." autofocus>
+                <div class="password-hint">🔑 Hint: When did our journey begin? (Format: monthdayyear)</div>
+            </div>
+            <button id="login-btn" class="pixel-btn pink-btn">Unlock 🗝️</button>
+            <p id="login-error" class="hidden error-text">Alas! Wrong word, milady! 🧐</p>
+        </div>
+    </div>
+    
+    <!-- Screen 1: Slider Question -->
+    <div id="screen-1" class="screen show">
+        <div class="card">
+            <h1>Sharonnnn 💕</h1>
+            <p>how cool is this website?</p>
+            
+            <div class="duck-container" id="duck-main">
+                <svg viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet">
+                    <!-- Duck built with simple SVG blocks to mimic pixel art -->
+                    <rect class="duck-body" x="4" y="2" width="8" height="6" />
+                    <rect class="duck-body" x="2" y="8" width="12" height="5" />
+                    <rect class="duck-wing" x="4" y="9" width="4" height="3" />
+                    <rect class="duck-eye" x="9" y="4" width="1" height="1" />
+                    <rect class="duck-beak" x="12" y="5" width="4" height="2" />
+                    <rect class="duck-foot" x="5" y="13" width="2" height="2" />
+                    <rect class="duck-foot" x="9" y="13" width="2" height="2" />
+                    
+                    <!-- Hidden angry brow shown via CSS based on parent class -->
+                    <rect class="angry-brow" id="angry-brow" x="8" y="2" width="3" height="1" />
+                </svg>
+            </div>
+            
+            <div class="slider-container">
+                <input type="range" min="1" max="10" value="5" class="pixel-slider" id="cool-slider">
+                <p id="slider-value">5</p>
+            </div>
+
+            <button id="next-btn" class="pixel-btn pink-btn hidden">Next ➡️</button>
+        </div>
+    </div>
+
+    <!-- Screen 2: Yes/No Question -->
+    <div id="screen-2" class="screen hide">
+        
+        <!-- Navigation Menu -->
+        <nav class="pixel-nav">
+            <div class="menu-container">
+                <button class="pixel-btn pink-btn menu-btn" id="menu-btn">Menu ▼</button>
+                <ul class="dropdown-menu hidden" id="dropdown-menu">
+                    <li id="journey-option">Our Journey</li>
+                    <li id="date-invite-option">Virtual Date 💌</li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Journey Modal Popup -->
+        <div id="journey-modal" class="modal-overlay hidden">
+            <div class="modal-card card">
+                <button id="close-modal" class="close-btn">X</button>
+                <h2>Our Journey 💕</h2>
+                <p class="modal-subtitle">Since Dec 16, 2023...</p>
+                <div class="timer-display" id="timer-display">
+                    <div class="time-block"><span id="t-years">0</span><br><small>Years</small></div>
+                    <div class="time-block"><span id="t-months">0</span><br><small>Months</small></div>
+                    <div class="time-block"><span id="t-days">0</span><br><small>Days</small></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Virtual Date Modal Popup -->
+        <div id="date-modal" class="modal-overlay hidden">
+            <div class="modal-card card ticket-card scrollable-ticket">
+                <button id="close-date-modal" class="close-btn">X</button>
+                <div class="ticket-header">
+                    <h2>📜 ROYAL PROCLAMATION 📜</h2>
+                </div>
+                <!-- Scrollable wrapper for invitation text -->
+                <div class="scroll-container" id="invite-scroll-container">
+                    <div class="ticket-body shakespearean-letter">
+                        <p class="salutation">Unto the most exquisite, virtuous, and fair <strong>Lady Sharonnn</strong>,</p>
+                        
+                        <p class="paragraph">Knowest thou that my heart, like a restless sparrow in spring, doth flutter solely at the mention of thy sweet name? Since that blessed eve of December the sixteenth, in the year of our Lord two thousand and twenty-three, my soul hath been bound to thine in a bond most wondrous.</p>
+                        
+                        <p class="paragraph">Therefore, I do most humbly petition thy presence for a splendid, virtual rendezvous. Let us meet upon the magical, glowing mirror of <strong>FaceTime</strong>, where distance is but a fleeting shadow. Wherefore, I pray thee in absolute earnest, <strong>keep thy FaceTime fully ready and charged to the very brim</strong>, lest a darkened screen sever the sacred connection of our souls at the appointed hour!</p>
+                        
+                        <p class="paragraph">Dost thou deign to grace me with thy presence and embark upon this digital quest together, to share in sweet laughter and joyous tales?</p>
+                        
+                        <p class="paragraph-sig">Thine humble and devoted admirer, <br><em>Thy Loving Date</em></p>
+                        
+                        <p class="scroll-instruction">📜 (Scroll down to deliver thy royal decree...)</p>
+                    </div>
+                </div>
+                
+                <!-- Buttons, hidden initially, unlocked by scrolling -->
+                <div class="buttons-container locked-buttons hidden" id="date-buttons">
+                    <button id="accept-date-btn" class="pixel-btn pink-btn">I Deign to Accept! 🌹</button>
+                    <button id="decline-date-btn" class="pixel-btn white-btn">Decline 💔</button>
+                </div>
+                
+                <div id="date-success-message" class="hidden">
+                    <h3 class="success-bounce">Gramercy, Fair Lady! 🎉🥂</h3>
+                    <p class="shakespearean-witty-thanks">
+                        Thy gracious acceptance hath filled my heart with exceeding merriment! Verily, the digital realms of FaceTime shall witness a meeting of the most splendid sort. <strong>Go forth, charge thy magical device to the absolute peak of its power, and keep FaceTime at the ready</strong>, prepared for thy devoted admirer! Prepare thy fairest garments and radiant smile, for a glorious evening awaits us! 💖
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card main-card">
+            <h1>Do you love meeeee?</h1>
+            
+            <div class="duck-container duck-happy">
+                <svg viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet">
+                    <!-- Same base duck but forced into happy animation state -->
+                    <rect class="duck-body" x="4" y="2" width="8" height="6" />
+                    <rect class="duck-body" x="2" y="8" width="12" height="5" />
+                    <rect class="duck-wing" x="4" y="9" width="4" height="3" />
+                    <rect class="duck-eye" x="9" y="4" width="1" height="1" />
+                    <rect class="duck-beak" x="12" y="5" width="4" height="2" />
+                    <rect class="duck-foot" x="5" y="13" width="2" height="2" />
+                    <rect class="duck-foot" x="9" y="13" width="2" height="2" />
+                </svg>
+            </div>
+
+            <div class="buttons-container">
+                <button id="yes-btn" class="pixel-btn pink-btn">YES 💖</button>
+                <button id="no-btn" class="pixel-btn white-btn">NO 💔</button>
+            </div>
+            <p id="final-message" class="hidden">I knew itttt😌💕</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
