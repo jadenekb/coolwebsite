@@ -40,12 +40,75 @@ body.unlocked {
     color: var(--text-dark);
 }
 
-/* Keep the pink world hidden until the password is entered */
-body.locked #environment-container,
-body.locked .screen,
-body.locked #particle-container,
+/* Before the password, the real site stays up — just in black */
+body.locked {
+    background: #000;
+    color: #f2f2f2;
+}
+
+body.locked #environment-container {
+    filter: grayscale(1) brightness(0.18);
+}
+
+body.locked .card {
+    background: #0c0c0c;
+    color: #f2f2f2;
+    border-color: #2c2c2c;
+    box-shadow: 8px 8px 0 #000;
+}
+
+body.locked h1,
+body.locked h2,
+body.locked p,
+body.locked #slider-value,
+body.locked .dropdown-menu li {
+    color: #f2f2f2;
+    text-shadow: none;
+}
+
+body.locked .pink-btn,
+body.locked .white-btn,
+body.locked #login-btn {
+    background: #161616;
+    color: #fff;
+    border-color: #3a3a3a;
+    box-shadow: 4px 4px 0 #000;
+    text-shadow: none;
+}
+
+body.locked .pixel-slider {
+    background: #1c1c1c;
+    border-color: #3a3a3a;
+}
+
+body.locked .pixel-slider::-webkit-slider-thumb {
+    background: #3a3a3a;
+    border-color: #111;
+}
+
+body.locked .duck-body { fill: #3a3a3a; }
+body.locked .duck-wing { fill: #2a2a2a; }
+body.locked .duck-beak { fill: #555; }
+body.locked .duck-foot { fill: #444; }
+
+body.locked .screen .pixel-btn,
+body.locked .pixel-slider,
+body.locked .pixel-nav,
+body.locked .bash-launcher {
+    pointer-events: none;
+}
+
 body.locked .bash-launcher {
     visibility: hidden;
+}
+
+body.locked #gate-panel,
+body.locked #gate-panel * {
+    pointer-events: auto;
+}
+
+body:not(.locked) #gate-panel {
+    display: none;
 }
 
 /* Background states for slider values */
@@ -756,9 +819,9 @@ body.starry-bg .card {
    NEW STYLES: THEMED LOGIN SCREEN & SHAKESPEAREAN LETTER
    ==================================================== */
 
-/* Full-Screen Login Overlay */
-#login-overlay {
-    background: #000;
+/* Welcome overlay, after the password */
+#welcome-overlay {
+    background: rgba(0, 0, 0, 0.72);
     z-index: 99999;
     opacity: 1;
     position: fixed;
@@ -772,37 +835,51 @@ body.starry-bg .card {
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-#login-overlay.hidden {
-    opacity: 0;
-    pointer-events: none;
-    transform: scale(1.1);
+#welcome-overlay.hidden {
+    display: none !important;
 }
 
-.login-card {
-    max-width: 460px;
-    width: 90%;
-    text-align: center;
-    background: #000;
-    color: #f4f4f4;
-    border-color: #2a2a2a;
-    box-shadow: 8px 8px 0 #111;
-    animation: loginCardPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.welcome-card {
+    max-width: 520px;
+    width: 92%;
+    background: #fff !important;
+    color: var(--text-dark) !important;
+    border-color: var(--border-color) !important;
+    box-shadow: 8px 8px 0 var(--shadow-color) !important;
+    animation: loginCardPop 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.login-card h2,
-.login-subtitle {
-    color: #f4f4f4;
-    text-shadow: none;
-}
-
-.login-card h2 {
-    font-size: 16px;
-    line-height: 1.6;
-}
-
-.login-subtitle {
-    color: #d0d0d0;
+.welcome-kicker {
+    color: #e8b931 !important;
     font-size: 9px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.welcome-name {
+    font-family: 'Pacifico', cursive;
+    font-size: 46px;
+    line-height: 1.15;
+    color: #e84393 !important;
+    text-shadow: 3px 3px 0 #ffd6e7 !important;
+    margin-bottom: 12px;
+}
+
+.welcome-copy {
+    color: var(--text-dark) !important;
+    font-size: 9px;
+    line-height: 1.8;
+    max-width: 420px;
+    margin: 0 auto 8px;
+}
+
+#gate-panel {
+    margin-top: 8px;
+}
+
+.gate-label {
+    font-size: 9px;
+    margin-bottom: 12px;
 }
 
 @keyframes loginCardPop {
@@ -810,6 +887,7 @@ body.starry-bg .card {
     100% { transform: scale(1) translateY(0); opacity: 1; }
 }
 
+.pixel-input,
 body.locked .pixel-input {
     width: 100%;
     padding: 15px;
@@ -818,7 +896,7 @@ body.locked .pixel-input {
     border: 4px solid #3a3a3a;
     box-shadow: inset 4px 4px 0px #000;
     color: #fff;
-    background: #000;
+    background: #111;
     text-align: center;
     outline: none;
     margin-bottom: 8px;
@@ -841,6 +919,20 @@ body.locked #login-btn {
     border-color: #3a3a3a;
     box-shadow: 4px 4px 0 #000;
     text-shadow: none;
+}
+
+body.locked .welcome-card .pink-btn {
+    background: var(--pink-btn);
+    color: #fff;
+    border-color: var(--border-color);
+    box-shadow: 4px 4px 0 var(--shadow-color);
+}
+
+body.locked .welcome-card .white-btn {
+    background: #fff;
+    color: var(--text-dark);
+    border-color: var(--border-color);
+    box-shadow: 4px 4px 0 var(--shadow-color);
 }
 
 body.locked .password-hint {
@@ -1062,27 +1154,212 @@ body.bash-open .bash-launcher {
     pointer-events: none;
 }
 
-.bash-screen {
-    z-index: 1800;
+#screen-bash {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5000;
     overflow: hidden;
+    overflow-y: auto;
     background:
         radial-gradient(circle at 50% 18%, #ffe3ee 0%, #ffb3c9 28%, #ff6b9a 58%, #c2185b 100%);
-    align-items: flex-start;
-    padding: 72px 16px 40px;
-    overflow-y: auto;
+    align-items: center;
+    justify-content: center;
+    padding: 78px 16px 36px;
 }
 
-.bash-screen.show {
-    display: flex;
+#screen-bash.show {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
 }
 
 .bash-back {
     position: fixed;
     top: 18px;
     left: 18px;
-    z-index: 5;
+    z-index: 6;
     margin: 0;
     background: #fff;
+}
+
+.bash-menu {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 6;
+    text-align: left;
+}
+
+.bash-menu .pixel-btn {
+    margin: 0;
+}
+
+.bash-menu .dropdown-menu {
+    right: 0;
+    left: auto;
+    width: 340px;
+    max-width: calc(100vw - 36px);
+    min-width: 0;
+}
+
+.bash-menu .dropdown-menu li {
+    font-size: 8px;
+    line-height: 1.7;
+    text-align: left;
+    white-space: normal;
+}
+
+.decree-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    background: rgba(80, 0, 32, 0.45);
+    backdrop-filter: blur(3px);
+}
+
+.decree-card {
+    width: min(640px, 94vw);
+    max-height: min(86vh, 760px);
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    border-color: #e8b931;
+    box-shadow: 8px 8px 0 #ff4d88;
+    background: #fffdf8;
+    padding: 28px 22px 22px;
+    overflow: visible;
+}
+
+.decree-card h2 {
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    text-align: center;
+    text-shadow: none;
+    color: #9d174d;
+}
+
+.decree-card .bash-kicker {
+    text-align: center;
+}
+
+.decree-scroll {
+    overflow-y: auto;
+    max-height: 58vh;
+    padding: 12px 10px 8px;
+    border: 4px dashed #ffb3c6;
+    background: #fffdf3;
+    text-align: left;
+}
+
+.decree-scroll::-webkit-scrollbar {
+    width: 12px;
+}
+
+.decree-scroll::-webkit-scrollbar-thumb {
+    background: #ff6699;
+    border: 2px solid #fff5f7;
+}
+
+.memory-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 4px;
+    border-bottom: 2px dashed #ffd0dc;
+}
+
+.memory-item:last-child {
+    border-bottom: none;
+}
+
+.memory-num {
+    flex: 0 0 auto;
+    min-width: 36px;
+    padding: 6px 4px;
+    background: #e84393;
+    color: #fff;
+    border: 3px solid #9d174d;
+    box-shadow: 2px 2px 0 #f6c945;
+    font-size: 9px;
+    text-align: center;
+}
+
+.memory-item p {
+    font-size: 8px;
+    line-height: 1.75;
+    margin: 0;
+    color: #9d174d;
+}
+
+.decree-scroll .paragraph {
+    font-size: 8px;
+    line-height: 1.85;
+    margin-bottom: 14px;
+    color: #9d174d;
+}
+
+.revel-row {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    gap: 10px;
+    padding: 10px 4px;
+    border-bottom: 2px dashed #ffd0dc;
+}
+
+.revel-row strong {
+    font-size: 8px;
+    color: #e84393;
+}
+
+.revel-row p {
+    font-size: 8px;
+    line-height: 1.75;
+    margin: 0;
+    color: #9d174d;
+}
+
+.vow-item {
+    font-size: 8px;
+    line-height: 1.8;
+    color: #9d174d;
+    margin: 0 0 12px;
+    padding-left: 8px;
+}
+
+.seal-btn {
+    display: block;
+    margin: 16px auto 4px;
+}
+
+.seal-done {
+    font-family: 'Pacifico', cursive;
+    font-size: 26px;
+    text-align: center;
+    color: #e84393;
+    margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+    .bash-menu .dropdown-menu {
+        min-width: 220px;
+    }
+    .revel-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+    .decree-card h2 {
+        font-size: 11px;
+    }
 }
 
 .bash-balloons {

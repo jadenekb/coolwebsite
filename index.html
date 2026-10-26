@@ -12,17 +12,16 @@
 <body class="locked">
     <div id="particle-container"></div>
     
-    <!-- Login Screen Overlay -->
-    <div id="login-overlay" class="modal-overlay">
-        <div class="login-card card">
-            <h2>SHARONNN'S REALM 💕</h2>
-            <p class="login-subtitle">Speak the secret password to unlock this wonderland...</p>
-            <div class="password-container">
-                <input type="password" id="password-input" class="pixel-input" placeholder="Type password..." autofocus>
-                <div class="password-hint">🔑 Hint: When did our journey begin? (Format: monthdayyear)</div>
+    <!-- Welcome, shown only after the password -->
+    <div id="welcome-overlay" class="modal-overlay hidden">
+        <div class="welcome-card card">
+            <p class="welcome-kicker">Hello</p>
+            <h2 class="welcome-name">Welcome, Sharon</h2>
+            <p class="welcome-copy">The lights are on. This whole place is yours, including your birthday bash.</p>
+            <div class="buttons-container">
+                <button id="welcome-enter" class="pixel-btn pink-btn" type="button">Come in</button>
+                <button id="welcome-bash" class="pixel-btn white-btn" type="button">Birthday bash</button>
             </div>
-            <button id="login-btn" class="pixel-btn pink-btn">Unlock 🗝️</button>
-            <p id="login-error" class="hidden error-text">Alas! Wrong word, milady! 🧐</p>
         </div>
     </div>
     
@@ -51,6 +50,14 @@
             <div class="slider-container">
                 <input type="range" min="1" max="10" value="5" class="pixel-slider" id="cool-slider">
                 <p id="slider-value">5</p>
+            </div>
+
+            <div id="gate-panel">
+                <p class="gate-label">Enter the password</p>
+                <input type="password" id="password-input" class="pixel-input" placeholder="Type password..." autofocus>
+                <div class="password-hint">Hint: When did our journey begin? (monthdayyear)</div>
+                <button id="login-btn" class="pixel-btn" type="button">Unlock</button>
+                <p id="login-error" class="hidden error-text">Wrong password. Try again.</p>
             </div>
 
             <button id="next-btn" class="pixel-btn pink-btn hidden">Next ➡️</button>
@@ -164,6 +171,26 @@
 
         <button id="bash-back" class="pixel-btn white-btn bash-back" type="button">← Back</button>
 
+        <div class="bash-menu">
+            <button id="bash-menu-btn" class="pixel-btn pink-btn" type="button">Decrees ▼</button>
+            <ul id="bash-dropdown" class="dropdown-menu hidden">
+                <li data-decree="memories">Six-and-Twenty Remembrances</li>
+                <li data-decree="epistle">A Natal Epistle</li>
+                <li data-decree="revels">The Order of Revels</li>
+                <li data-decree="vows">Vows Unto Thee</li>
+                <li data-decree="blessing">A Blessing</li>
+            </ul>
+        </div>
+
+        <div id="decree-modal" class="decree-modal hidden">
+            <div class="decree-card card">
+                <button id="decree-close" class="close-btn" type="button">X</button>
+                <p class="bash-kicker" id="decree-kicker"></p>
+                <h2 id="decree-title"></h2>
+                <div class="decree-scroll" id="decree-body"></div>
+            </div>
+        </div>
+
         <div class="bash-card card">
             <p class="bash-kicker">You are invited</p>
             <h1 class="bash-title"><span class="bash-script">Sharon</span>Birthday Bash</h1>
@@ -185,7 +212,7 @@
                 <div class="cd-block"><span id="cd-secs">00</span><small>Secs</small></div>
             </div>
 
-            <p class="bash-note">One month of waiting, then the whole day is yours. The clock is already counting down to midnight on the 26th.</p>
+            <p class="bash-note">One month of waiting, then the whole day is yours. Open Decrees for six-and-twenty remembrances, a letter, and the order of the revels.</p>
             <p id="bash-arrived" class="bash-arrived hidden">Happy Birthday, Sharon. The bash is here.</p>
         </div>
     </div>

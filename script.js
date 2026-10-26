@@ -877,36 +877,36 @@ if (acceptDateBtn) {
 // ----------------------------------------------------
 // PASSWORD LOGIN SCREEN OVERLAY LOGIC
 // ----------------------------------------------------
-const loginOverlay = document.getElementById('login-overlay');
+const welcomeOverlay = document.getElementById('welcome-overlay');
+const welcomeEnter = document.getElementById('welcome-enter');
+const welcomeBash = document.getElementById('welcome-bash');
+const gatePanel = document.getElementById('gate-panel');
 const passwordInput = document.getElementById('password-input');
 const loginBtn = document.getElementById('login-btn');
 const loginError = document.getElementById('login-error');
+
+function revealSite(openBash) {
+    document.body.classList.remove('locked');
+    document.body.classList.add('unlocked');
+    if (welcomeOverlay) welcomeOverlay.classList.add('hidden');
+    playNotification();
+    if (openBash) openBirthdayBash();
+}
 
 function attemptLogin() {
     const enteredPassword = passwordInput.value.trim();
     if (enteredPassword === 'december162023') {
         playSparkleSound();
-        document.body.classList.remove('locked');
-        document.body.classList.add('unlocked');
-        loginOverlay.classList.add('hidden');
-        
-        if (window.location.hash === '#bash') {
-            openBirthdayBash();
-        }
-        
-        // Brief welcoming sound
-        setTimeout(() => {
-            playNotification();
-        }, 700);
+        if (gatePanel) gatePanel.classList.add('hidden');
+        if (welcomeOverlay) welcomeOverlay.classList.remove('hidden');
     } else {
         playWomp();
         loginError.classList.remove('hidden');
-        const loginCard = document.querySelector('.login-card');
-        if (loginCard) {
-            loginCard.classList.add('card-shake');
+        if (gatePanel) {
+            gatePanel.classList.add('card-shake');
             passwordInput.select();
             setTimeout(() => {
-                loginCard.classList.remove('card-shake');
+                gatePanel.classList.remove('card-shake');
             }, 450);
         }
     }
@@ -922,6 +922,15 @@ if (loginBtn && passwordInput) {
     
     // Add hover sounds for login button
     loginBtn.addEventListener('mouseenter', playHoverSound);
+}
+
+if (welcomeEnter) {
+    welcomeEnter.addEventListener('click', () => revealSite(false));
+    welcomeEnter.addEventListener('mouseenter', playHoverSound);
+}
+if (welcomeBash) {
+    welcomeBash.addEventListener('click', () => revealSite(true));
+    welcomeBash.addEventListener('mouseenter', playHoverSound);
 }
 
 // ----------------------------------------------------
@@ -994,7 +1003,7 @@ function spawnConfettiPiece() {
 }
 
 function openBirthdayBash() {
-    if (!bashScreen || document.body.classList.contains('locked')) return;
+    if (!bashScreen || !document.body.classList.contains('unlocked')) return;
     bashScreen.classList.remove('hide');
     bashScreen.classList.add('show');
     document.body.classList.add('bash-open');
@@ -1009,8 +1018,122 @@ function openBirthdayBash() {
     playSparkleSound();
 }
 
+const DECREES = {
+    memories: {
+        kicker: 'For the twenty-sixth of November',
+        title: 'Six-and-Twenty Remembrances',
+        html: `
+            <p class="paragraph">Here be six-and-twenty small rites, one for every year of thee, to make thy natal day a kingdom and not a mere date upon a calendar.</p>
+            ${[
+                'Ere thou wakest, a letter shall wait, written by hand as in the elder days.',
+                'Thy favoured sweet shall be set forth, as tribute before a queen.',
+                'I shall sing to thee, though the tune wander, for love need not be clever.',
+                'We shall walk with no errand, and speak of nothing and of everything.',
+                'I shall tell again the eve of December the sixteenth, when our tale began.',
+                'Flowers, not a great heap, but chosen as if each petal knew thy name.',
+                'A feast of whatsoever thou lovest best, though the board be a small one.',
+                'FaceTime shall be charged to the brim, that distance may not dim thy face.',
+                'We shall dance in the kitchen, clumsy and glad, with no audience but the spoons.',
+                'I shall say thy name slowly, Sharon, as one might speak a charm.',
+                'I shall give thee back the sound of thy laugh, and tell thee why I keep it.',
+                'Candles, six-and-twenty, if the cake will bear so bright a crown.',
+                'A promise I once made in passing shall be kept before the sun goeth down.',
+                'I shall ask what thou wouldst have of this new year of thy life, and listen.',
+                'Old pictures of us shall be brought out and looked upon together.',
+                'A foolish gift, worth little coin and much intention.',
+                'Thou shalt be suffered to sleep late, and the morning shall be guarded for thee.',
+                'A toast, in whatever cup we have, lifted to the day thou camest into the world.',
+                'One thing I have never said aloud shall be said, and not taken back.',
+                'We shall find a star, or the nearest window that keepeth them.',
+                'Thy favourite tale shall be told again, even if thou knowest every word.',
+                'I shall hold thy hand and be quiet, which is a rarer gift than speeches.',
+                'A paper crown, for on this day thou art sovereign of the house.',
+                'Thanks shall be given for the year that carried thee to six-and-twenty.',
+                'A wish shall be spoken over the candle before the flame is put out.',
+                'The night shall be left wholly thine, with no hurry hiding in it.'
+            ].map((line, i) => `
+                <div class="memory-item">
+                    <span class="memory-num">${String(i + 1).padStart(2, '0')}</span>
+                    <p>${line}</p>
+                </div>
+            `).join('')}
+        `
+    },
+    epistle: {
+        kicker: 'Written for Lady Sharon',
+        title: 'A Natal Epistle',
+        html: `
+            <p class="paragraph">Unto the fair and well-beloved Sharon, on the eve of her six-and-twentieth year, greeting.</p>
+            <p class="paragraph">Know, sweet lady, that since the sixteenth of December in the year two thousand and twenty-three, my days have kept a secret calendar whose only feast is thee. Other folk count years by winters. I count them by the times thou hast laughed, and by the times the world grew kinder because thou wert in it.</p>
+            <p class="paragraph">On the twenty-sixth of November the sun, if it hath any courtesy, ought to rise a little later, that thou mayest meet it crowned and unhurried. I have no realm to lay at thy feet save this small glowing kingdom of pixels and promises, yet it is thine as wholly as my better hours are thine.</p>
+            <p class="paragraph">If I could command the clock, I should bid it pause upon thy birthday and refuse every lesser appointment. Since I cannot, I shall do the next best thing: I shall be present, foolish, faithful, and glad.</p>
+            <p class="paragraph">So take this day, Sharon. Wear it. Spill cake upon it. Let it be easy. And when the candles fail, know the wish was already granted on the day I first knew thy name.</p>
+            <p class="paragraph" style="text-align:right">Thine, in old fashion and present tense,<br>thy loving fool</p>
+        `
+    },
+    revels: {
+        kicker: 'The programme of the day',
+        title: 'The Order of Revels',
+        html: `
+            <p class="paragraph">Let the twenty-sixth of November proceed in this gentle order, unless the lady commandeth otherwise, for her word outranketh the schedule.</p>
+            <div class="revel-row"><strong>Dawn</strong><p>A letter, a slow waking, and no task that dare knock before thou art ready.</p></div>
+            <div class="revel-row"><strong>Morning</strong><p>Sweet things, a paper crown, and the retelling of December the sixteenth.</p></div>
+            <div class="revel-row"><strong>Midday</strong><p>A walk or a feast, chosen by thee, with the hours left loose on purpose.</p></div>
+            <div class="revel-row"><strong>Afternoon</strong><p>Pictures, a foolish gift, and one true thing spoken that was kept too long.</p></div>
+            <div class="revel-row"><strong>Evening</strong><p>FaceTime lit and charged, music, a kitchen dance, and six-and-twenty candles if the cake consenteth.</p></div>
+            <div class="revel-row"><strong>Night</strong><p>A toast, a star, a wish, and the rest of the dark left quiet for thee.</p></div>
+        `
+    },
+    vows: {
+        kicker: 'Sworn without a notary',
+        title: 'Vows Unto Thee',
+        html: `
+            <p class="paragraph">These I promise thee, not for a single birthday only, but beginning there.</p>
+            <p class="vow-item">I. I shall remember the small things thou sayest, and not only the grand ones.</p>
+            <p class="vow-item">II. I shall keep our beginning, the sixteenth of December, as a holy ordinary day.</p>
+            <p class="vow-item">III. I shall make thee room to be soft, silly, tired, or splendid, as the hour requireth.</p>
+            <p class="vow-item">IV. I shall choose thee again on ordinary Tuesdays, when no candle is lit.</p>
+            <p class="vow-item">V. I shall bring thee six-and-twenty kindnesses, and then begin the count anew.</p>
+            <p class="vow-item">VI. I shall not let the miles, nor a dim screen, nor a busy week, speak louder than thy name.</p>
+        `
+    },
+    blessing: {
+        kicker: 'To be sealed with a kiss of the button',
+        title: 'A Blessing',
+        html: `
+            <p class="paragraph">May the twenty-sixth of November find thee warm, unhurried, and a little spoiled.</p>
+            <p class="paragraph">May thy cake rise, thy laughter arrive early, and every good wish thou art too modest to make come true behind thy back.</p>
+            <p class="paragraph">May the year that maketh thee six-and-twenty be gentler than the last, and braver where thou needest courage, and full of ordinary afternoons that turn out to have been the best part.</p>
+            <p class="paragraph">And mayest thou, Sharon, know thyself loved without having to earn the hour.</p>
+            <button id="seal-blessing" class="pixel-btn pink-btn seal-btn" type="button">Seal this blessing</button>
+        `
+    }
+};
+
+function closeDecrees() {
+    const menu = document.getElementById('bash-dropdown');
+    const modal = document.getElementById('decree-modal');
+    if (menu) menu.classList.add('hidden');
+    if (modal) modal.classList.add('hidden');
+}
+
+function openDecree(name) {
+    const decree = DECREES[name];
+    const modal = document.getElementById('decree-modal');
+    if (!decree || !modal) return;
+    document.getElementById('decree-kicker').textContent = decree.kicker;
+    document.getElementById('decree-title').textContent = decree.title;
+    document.getElementById('decree-body').innerHTML = decree.html;
+    document.getElementById('bash-dropdown').classList.add('hidden');
+    modal.classList.remove('hidden');
+    const scroll = document.getElementById('decree-body');
+    if (scroll) scroll.scrollTop = 0;
+    playNotification();
+}
+
 function closeBirthdayBash() {
     if (!bashScreen) return;
+    closeDecrees();
     bashScreen.classList.add('hide');
     bashScreen.classList.remove('show');
     document.body.classList.remove('bash-open');
@@ -1035,6 +1158,46 @@ if (bashBack) {
 }
 if (bashOption) {
     bashOption.addEventListener('click', openBirthdayBash);
+}
+
+const bashMenuBtn = document.getElementById('bash-menu-btn');
+const bashDropdown = document.getElementById('bash-dropdown');
+const decreeModal = document.getElementById('decree-modal');
+const decreeClose = document.getElementById('decree-close');
+const decreeBody = document.getElementById('decree-body');
+
+if (bashMenuBtn && bashDropdown) {
+    bashMenuBtn.addEventListener('click', () => {
+        bashDropdown.classList.toggle('hidden');
+        playPopSound();
+    });
+    bashMenuBtn.addEventListener('mouseenter', playHoverSound);
+    bashDropdown.querySelectorAll('li').forEach((item) => {
+        item.addEventListener('click', () => openDecree(item.dataset.decree));
+        item.addEventListener('mouseenter', playHoverSound);
+    });
+}
+
+if (decreeClose) {
+    decreeClose.addEventListener('click', () => {
+        decreeModal.classList.add('hidden');
+        playPopSound();
+    });
+}
+
+if (decreeBody) {
+    decreeBody.addEventListener('click', (event) => {
+        const seal = event.target.closest('#seal-blessing');
+        if (!seal || seal.disabled) return;
+        seal.disabled = true;
+        seal.textContent = 'Sealed';
+        const done = document.createElement('p');
+        done.className = 'seal-done';
+        done.textContent = 'So may it be, Sharon.';
+        seal.insertAdjacentElement('afterend', done);
+        playFanfare();
+        for (let i = 0; i < 24; i++) setTimeout(createFloatingHeart, i * 70);
+    });
 }
 
 window.addEventListener('hashchange', () => {
