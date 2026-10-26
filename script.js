@@ -454,7 +454,13 @@ function setDuckState(state) {
     clearInterval(blockThrowInterval);
     duckState = state;
     
+    const keepLocked = document.body.classList.contains('locked');
+    const keepUnlocked = document.body.classList.contains('unlocked');
+    const keepBash = document.body.classList.contains('bash-open');
     document.body.className = '';
+    if (keepLocked) document.body.classList.add('locked');
+    if (keepUnlocked) document.body.classList.add('unlocked');
+    if (keepBash) document.body.classList.add('bash-open');
     
     if (state === 'angry') {
         stopWandering(true, false);
@@ -612,7 +618,8 @@ nextBtn.addEventListener('click', () => {
     document.getElementById('screen-1').classList.remove('show');
     document.getElementById('screen-1').classList.add('hide');
     
-    document.body.className = 'happy-bg';
+    document.body.classList.remove('angry-bg', 'starry-bg');
+    document.body.classList.add('happy-bg');
     
     setTimeout(() => {
         document.getElementById('screen-2').classList.remove('hide');
@@ -879,7 +886,13 @@ function attemptLogin() {
     const enteredPassword = passwordInput.value.trim();
     if (enteredPassword === 'december162023') {
         playSparkleSound();
+        document.body.classList.remove('locked');
+        document.body.classList.add('unlocked');
         loginOverlay.classList.add('hidden');
+        
+        if (window.location.hash === '#bash') {
+            openBirthdayBash();
+        }
         
         // Brief welcoming sound
         setTimeout(() => {
@@ -910,6 +923,127 @@ if (loginBtn && passwordInput) {
     // Add hover sounds for login button
     loginBtn.addEventListener('mouseenter', playHoverSound);
 }
+
+// ----------------------------------------------------
+// BIRTHDAY BASH — countdown to 26 November 2026
+// ----------------------------------------------------
+const BIRTHDAY = new Date(2026, 10, 26, 0, 0, 0, 0);
+const bashScreen = document.getElementById('screen-bash');
+const bashLauncher = document.getElementById('bash-launcher');
+const bashBack = document.getElementById('bash-back');
+const bashOption = document.getElementById('bash-option');
+const bashConfetti = document.getElementById('bash-confetti');
+const bashStatus = document.getElementById('bash-status');
+const bashCountdown = document.getElementById('bash-countdown');
+const bashArrived = document.getElementById('bash-arrived');
+
+let confettiTimer = null;
+let birthdayCelebrated = false;
+
+function padTime(n) {
+    return String(n).padStart(2, '0');
+}
+
+function updateBirthdayCountdown() {
+    const diff = BIRTHDAY.getTime() - Date.now();
+    const daysEl = document.getElementById('cd-days');
+    const hoursEl = document.getElementById('cd-hours');
+    const minsEl = document.getElementById('cd-mins');
+    const secsEl = document.getElementById('cd-secs');
+    if (!daysEl) return;
+
+    if (diff <= 0) {
+        daysEl.textContent = '00';
+        hoursEl.textContent = '00';
+        minsEl.textContent = '00';
+        secsEl.textContent = '00';
+        if (bashStatus) bashStatus.textContent = 'The day is here';
+        if (bashCountdown) bashCountdown.classList.add('hidden');
+        if (bashArrived) bashArrived.classList.remove('hidden');
+        if (!birthdayCelebrated) {
+            birthdayCelebrated = true;
+            playFanfare();
+            let fwInterval = setInterval(createFirework, 180);
+            setTimeout(() => clearInterval(fwInterval), 4000);
+        }
+        return;
+    }
+
+    const totalSeconds = Math.floor(diff / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const mins = Math.floor((totalSeconds % 3600) / 60);
+    const secs = totalSeconds % 60;
+
+    daysEl.textContent = padTime(days);
+    hoursEl.textContent = padTime(hours);
+    minsEl.textContent = padTime(mins);
+    secsEl.textContent = padTime(secs);
+}
+
+function spawnConfettiPiece() {
+    if (!bashConfetti || !document.body.classList.contains('bash-open')) return;
+    const piece = document.createElement('span');
+    const colors = ['#e84393', '#f6c945', '#ffffff', '#ff8fab', '#c77dff', '#ff6b6b'];
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDuration = (3 + Math.random() * 3) + 's';
+    piece.style.transform = `rotate(${Math.random() * 180}deg)`;
+    bashConfetti.appendChild(piece);
+    setTimeout(() => piece.remove(), 6500);
+}
+
+function openBirthdayBash() {
+    if (!bashScreen || document.body.classList.contains('locked')) return;
+    bashScreen.classList.remove('hide');
+    bashScreen.classList.add('show');
+    document.body.classList.add('bash-open');
+    if (dropdownMenu) dropdownMenu.classList.add('hidden');
+    if (window.location.hash !== '#bash') {
+        history.pushState({ bash: true }, '', '#bash');
+    }
+    updateBirthdayCountdown();
+    if (!confettiTimer) {
+        confettiTimer = setInterval(spawnConfettiPiece, 180);
+    }
+    playSparkleSound();
+}
+
+function closeBirthdayBash() {
+    if (!bashScreen) return;
+    bashScreen.classList.add('hide');
+    bashScreen.classList.remove('show');
+    document.body.classList.remove('bash-open');
+    if (confettiTimer) {
+        clearInterval(confettiTimer);
+        confettiTimer = null;
+    }
+    if (bashConfetti) bashConfetti.innerHTML = '';
+    if (window.location.hash === '#bash') {
+        history.pushState({ bash: false }, '', window.location.pathname + window.location.search);
+    }
+    playPopSound();
+}
+
+if (bashLauncher) {
+    bashLauncher.addEventListener('click', openBirthdayBash);
+    bashLauncher.addEventListener('mouseenter', playHoverSound);
+}
+if (bashBack) {
+    bashBack.addEventListener('click', closeBirthdayBash);
+    bashBack.addEventListener('mouseenter', playHoverSound);
+}
+if (bashOption) {
+    bashOption.addEventListener('click', openBirthdayBash);
+}
+
+window.addEventListener('hashchange', () => {
+    if (window.location.hash === '#bash') openBirthdayBash();
+    else if (document.body.classList.contains('bash-open')) closeBirthdayBash();
+});
+
+updateBirthdayCountdown();
+setInterval(updateBirthdayCountdown, 1000);
 
 function createFirework() {
     const fw = document.createElement('div');
