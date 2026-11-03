@@ -21,6 +21,7 @@
             <div class="buttons-container">
                 <button id="welcome-enter" class="pixel-btn pink-btn" type="button">Come in</button>
                 <button id="welcome-bash" class="pixel-btn white-btn" type="button">Birthday bash</button>
+                <button id="welcome-mystery" class="pixel-btn white-btn" type="button">A little mystery</button>
             </div>
         </div>
     </div>
@@ -28,8 +29,10 @@
     <!-- Screen 1: Slider Question -->
     <div id="screen-1" class="screen show">
         <div class="card">
+            <p class="land-kicker">You are in</p>
             <h1>Sharonnnn 💕</h1>
-            <p>how cool is this website?</p>
+            <p class="land-ask">how cool is this website?</p>
+            <p class="land-note">Slide it to ten. The duck has opinions, and the pig will bonk the glass.</p>
             
             <div class="duck-container" id="duck-main">
                 <svg viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet">
@@ -75,6 +78,7 @@
                     <li id="journey-option">Our Journey</li>
                     <li id="date-invite-option">Virtual Date 💌</li>
                     <li id="bash-option">Birthday Bash 🎂</li>
+                    <li id="mystery-option">A Little Mystery ❤️</li>
                 </ul>
             </div>
         </nav>
@@ -157,6 +161,7 @@
     </div>
 
     <button id="bash-launcher" class="bash-launcher pixel-btn pink-btn" type="button">🎂 Bash</button>
+    <button id="mystery-launcher" class="mystery-launcher pixel-btn pink-btn" type="button">❤️ Mystery</button>
 
     <!-- Birthday Bash -->
     <div id="screen-bash" class="screen hide bash-screen">
@@ -214,6 +219,42 @@
 
             <p class="bash-note">One month of waiting, then the whole day is yours. Open Decrees for six-and-twenty remembrances, a letter, and the order of the revels.</p>
             <p id="bash-arrived" class="bash-arrived hidden">Happy Birthday, Sharon. The bash is here.</p>
+        </div>
+    </div>
+
+    <!-- Daily gift mystery -->
+    <div id="screen-mystery" class="screen hide">
+        <button id="mystery-back" class="pixel-btn white-btn bash-back" type="button">← Back</button>
+        <div class="mystery-wrap">
+            <p class="bash-kicker">A little mystery for you</p>
+            <h1 class="bash-title"><span class="bash-script">Sharon</span>Four little hints</h1>
+            <p class="mystery-lead">One hint each morning, in India time. Future hints stay sealed.</p>
+
+            <div class="heel-frame" id="heel-frame" data-stage="0">
+                <div class="heel-veil" aria-hidden="true"></div>
+                <svg class="heel-svg" viewBox="0 0 240 150" role="img" aria-labelledby="heel-title">
+                    <title id="heel-title">A hidden surprise</title>
+                    <ellipse cx="128" cy="140" rx="78" ry="6" fill="#000" opacity="0.12"/>
+                    <path d="M58 98 L66 134 H98 L90 98 Z" fill="#1a1a1a"/>
+                    <path d="M50 94 C96 104 168 106 210 98 L212 110 C166 120 92 116 46 104 Z" fill="#1a1a1a"/>
+                    <path d="M64 96 C46 88 40 66 58 50 L78 44 C92 66 118 76 150 78 C176 80 196 88 208 100 L206 108 C168 98 104 98 64 96 Z" fill="#fffaf4"/>
+                    <path d="M176 80 C198 90 214 100 210 110 L182 102 C190 94 186 86 176 80 Z" fill="#1a1a1a"/>
+                    <path d="M48 48 C74 36 108 40 116 58" stroke="#1a1a1a" stroke-width="5" fill="none" stroke-linecap="round"/>
+                    <rect x="108" y="48" width="16" height="11" rx="1.5" fill="#1a1a1a" stroke="#fff" stroke-width="1.2"/>
+                    <g fill="#1a1a1a">
+                        <circle cx="112" cy="78" r="4.4"/>
+                        <circle cx="132" cy="70" r="4.4"/>
+                        <circle cx="154" cy="78" r="4"/>
+                        <circle cx="122" cy="92" r="3.6"/>
+                        <circle cx="146" cy="90" r="3.6"/>
+                    </g>
+                </svg>
+            </div>
+
+            <p class="mystery-status" id="mystery-status"></p>
+            <div class="mystery-countdown" id="mystery-countdown" aria-live="polite"></div>
+            <div id="mystery-cards" class="mystery-cards"></div>
+            <div id="mystery-finale" class="mystery-finale hidden"></div>
         </div>
     </div>
 
