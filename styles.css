@@ -209,6 +209,7 @@ svg {
 .duck-body { fill: #fceea7; transition: fill 0.3s; }
 .duck-wing { fill: #f0de87; transition: fill 0.3s; }
 .duck-eye { fill: #000000; }
+.duck-eye-white { fill: #fffdf6; }
 .duck-beak { fill: #f9a423; transition: fill 0.3s; }
 .duck-foot { fill: #e58f00; transition: fill 0.3s; }
 .angry-brow { fill: #cc0000; }
@@ -1145,9 +1146,10 @@ body.locked .password-hint {
    ==================================================== */
 .dog {
     position: absolute;
-    width: 48px;
-    height: 48px;
+    width: 76px;
+    height: 76px;
     z-index: 5;
+    image-rendering: pixelated;
     image-rendering: crisp-edges;
     transform-origin: bottom center;
 }
@@ -1157,7 +1159,7 @@ body.locked .password-hint {
 .dog-ear { fill: #8d6e63; } /* darker brown */
 .dog-snout { fill: #efebe9; } /* cream white snout */
 .dog-leg { fill: #8d6e63; }
-.dog-tail { fill: #8d6e63; transform-origin: 2px 5px; }
+.dog-tail { fill: #8d6e63; transform-origin: 5px 15px; }
 
 /* Wagging tail animation */
 .dog-wagging .dog-tail {

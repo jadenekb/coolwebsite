@@ -76,42 +76,52 @@ function playWomp() {
 }
 
 // SVG Templates for Duck States
-const duckSideSVG = `<svg viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet">
-    <rect class="duck-body" x="4" y="2" width="8" height="6" />
-    <rect class="duck-body" x="2" y="8" width="12" height="5" />
-    <rect class="duck-wing" x="4" y="9" width="4" height="3" />
-    <rect class="duck-eye" x="9" y="4" width="1" height="1" />
-    <rect class="duck-beak" x="12" y="5" width="4" height="2" />
-    <rect class="duck-foot" x="5" y="13" width="2" height="2" />
-    <rect class="duck-foot" x="9" y="13" width="2" height="2" />
+const duckSideSVG = `<svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet">
+    <rect class="duck-body" x="2" y="12" width="5" height="4" />
+    <rect class="duck-body" x="5" y="11" width="16" height="11" />
+    <rect class="duck-body" x="17" y="4" width="9" height="9" />
+    <rect class="duck-wing" x="9" y="14" width="8" height="6" />
+    <rect class="duck-eye-white" x="21" y="6" width="3" height="3" />
+    <rect class="duck-eye" x="23" y="7" width="2" height="2" />
+    <rect class="duck-beak" x="25" y="8" width="6" height="3" />
+    <rect class="duck-beak" x="26" y="11" width="4" height="2" />
+    <rect class="duck-foot" x="8" y="22" width="3" height="4" />
+    <rect class="duck-foot" x="15" y="22" width="3" height="4" />
+    <rect class="duck-foot" x="6" y="25" width="6" height="2" />
+    <rect class="duck-foot" x="13" y="25" width="6" height="2" />
 </svg>`;
 
-const duckFrontSVG = `<svg viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet">
-    <rect class="duck-body" x="2" y="2" width="12" height="11" />
-    <rect class="duck-wing" x="1" y="6" width="1" height="5" />
-    <rect class="duck-wing" x="14" y="6" width="1" height="5" />
-    <rect class="duck-eye" x="4" y="5" width="2" height="2" />
-    <rect class="duck-eye" x="10" y="5" width="2" height="2" />
-    <rect class="angry-brow" x="3" y="4" width="2" height="1" />
-    <rect class="angry-brow" x="5" y="5" width="1" height="1" />
-    <rect class="angry-brow" x="11" y="4" width="2" height="1" />
-    <rect class="angry-brow" x="10" y="5" width="1" height="1" />
-    <rect class="duck-beak" x="6" y="8" width="4" height="2" />
-    <rect class="duck-beak" x="5" y="9" width="6" height="1" />
-    <rect class="duck-foot" x="3" y="13" width="3" height="2" />
-    <rect class="duck-foot" x="10" y="13" width="3" height="2" />
+const duckFrontSVG = `<svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet">
+    <rect class="duck-body" x="6" y="3" width="20" height="20" />
+    <rect class="duck-wing" x="2" y="12" width="5" height="8" />
+    <rect class="duck-wing" x="25" y="12" width="5" height="8" />
+    <rect class="duck-eye-white" x="9" y="9" width="5" height="5" />
+    <rect class="duck-eye-white" x="18" y="9" width="5" height="5" />
+    <rect class="duck-eye" x="12" y="11" width="2" height="3" />
+    <rect class="duck-eye" x="18" y="11" width="2" height="3" />
+    <rect class="angry-brow" x="8" y="7" width="6" height="2" />
+    <rect class="angry-brow" x="18" y="7" width="6" height="2" />
+    <rect class="duck-beak" x="11" y="17" width="10" height="4" />
+    <rect class="duck-beak" x="13" y="21" width="6" height="2" />
+    <rect class="duck-foot" x="7" y="24" width="6" height="3" />
+    <rect class="duck-foot" x="19" y="24" width="6" height="3" />
+    <rect class="duck-foot" x="5" y="26" width="8" height="2" />
+    <rect class="duck-foot" x="19" y="26" width="8" height="2" />
 </svg>`;
 
-const duckHappySVG = `<svg viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet">
-    <rect class="duck-body" x="4" y="2" width="8" height="6" />
-    <rect class="duck-body" x="2" y="8" width="12" height="5" />
-    <rect class="duck-wing" x="3" y="6" width="4" height="4" /> 
-    <rect class="duck-eye" x="8" y="4" width="1" height="1" />
-    <rect class="duck-eye" x="9" y="3" width="2" height="1" />
-    <rect class="duck-eye" x="11" y="4" width="1" height="1" />
-    <rect class="duck-beak" x="12" y="5" width="4" height="2" />
-    <rect class="duck-foot" x="5" y="13" width="2" height="2" />
-    <rect class="duck-foot" x="9" y="13" width="2" height="2" />
+const duckHappySVG = `<svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet">
+    <rect class="duck-body" x="2" y="13" width="5" height="4" />
+    <rect class="duck-body" x="5" y="12" width="16" height="11" />
+    <rect class="duck-body" x="17" y="4" width="9" height="9" />
+    <rect class="duck-wing" x="8" y="8" width="8" height="6" />
+    <rect class="duck-eye" x="21" y="7" width="2" height="2" />
+    <rect class="duck-eye" x="24" y="6" width="2" height="2" />
+    <rect class="duck-eye" x="26" y="7" width="1" height="2" />
+    <rect class="duck-beak" x="25" y="9" width="6" height="3" />
+    <rect class="duck-foot" x="8" y="23" width="3" height="3" />
+    <rect class="duck-foot" x="15" y="23" width="3" height="3" />
+    <rect class="duck-foot" x="6" y="25" width="6" height="2" />
+    <rect class="duck-foot" x="13" y="25" width="6" height="2" />
 </svg>`;
 
 // Dom Elements
@@ -209,17 +219,25 @@ dogBody.className = 'dog dog-wagging';
 dogBody.dataset.x = window.innerWidth / 3;
 dogBody.style.transform = `translate(${window.innerWidth / 3}px, ${window.innerHeight * 0.7}px) scaleX(1)`;
 dogBody.innerHTML = `
-<svg viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet" style="width:100%; height:100%;">
-    <rect fill="#f4a7b9" x="3" y="6" width="8" height="5" />
-    <rect fill="#f4a7b9" x="9" y="4" width="4" height="4" />
-    <rect fill="#ffd0da" x="12" y="5" width="3" height="2" />
-    <rect fill="#c45b74" x="14" y="5" width="1" height="1" />
-    <rect fill="#c45b74" x="13" y="6" width="1" height="1" />
-    <rect fill="#e07a92" x="8" y="3" width="2" height="2" />
-    <rect fill="#1a1a1a" x="11" y="5" width="1" height="1" />
-    <rect fill="#e07a92" x="4" y="11" width="2" height="3" />
-    <rect fill="#e07a92" x="8" y="11" width="2" height="3" />
-    <rect fill="#f4a7b9" x="1" y="6" width="2" height="2" />
+<svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet" style="width:100%; height:100%;">
+    <g class="dog-tail">
+        <rect fill="#e38786" x="1" y="13" width="3" height="3" />
+        <rect fill="#f4a4a4" x="3" y="11" width="3" height="3" />
+    </g>
+    <rect fill="#e38786" x="6" y="22" width="4" height="8" />
+    <rect fill="#c46a68" x="6" y="28" width="4" height="2" />
+    <rect fill="#e38786" x="16" y="22" width="4" height="8" />
+    <rect fill="#c46a68" x="16" y="28" width="4" height="2" />
+    <rect fill="#f4a4a4" x="5" y="11" width="16" height="12" />
+    <rect fill="#e38786" x="5" y="19" width="16" height="4" />
+    <rect fill="#f4a4a4" x="18" y="8" width="9" height="12" />
+    <rect fill="#e38786" x="20" y="5" width="4" height="4" />
+    <rect fill="#f7c1bf" x="21" y="6" width="2" height="2" />
+    <rect fill="#fff" x="21" y="11" width="3" height="3" />
+    <rect fill="#1a1a1a" x="22" y="12" width="2" height="2" />
+    <rect fill="#ee8d8d" x="25" y="13" width="6" height="6" />
+    <rect fill="#6b3030" x="28" y="14" width="2" height="2" />
+    <rect fill="#6b3030" x="28" y="17" width="2" height="2" />
 </svg>
 `;
 envContainer.appendChild(dogBody);
@@ -271,7 +289,7 @@ function triggerDogBark(x, y) {
     
     const bubble = document.createElement('div');
     bubble.className = 'bark-bubble';
-    bubble.innerText = 'Woof! 🐾';
+    bubble.innerText = 'Oink!';
     bubble.style.left = (x + 20) + 'px';
     bubble.style.top = (y - 20) + 'px';
     
