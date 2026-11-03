@@ -210,15 +210,16 @@ dogBody.dataset.x = window.innerWidth / 3;
 dogBody.style.transform = `translate(${window.innerWidth / 3}px, ${window.innerHeight * 0.7}px) scaleX(1)`;
 dogBody.innerHTML = `
 <svg viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet" style="width:100%; height:100%;">
-    <rect class="dog-body" x="4" y="6" width="8" height="5" />
-    <rect class="dog-neck-head" x="9" y="3" width="4" height="4" />
-    <rect class="dog-snout" x="12" y="5" width="2" height="2" />
-    <rect class="dog-nose" x="13" y="5" width="1" height="1" fill="#000" />
-    <rect class="dog-ear" x="8" y="2" width="2" height="3" />
-    <rect class="dog-eye" x="10" y="4" width="1" height="1" fill="#000" />
-    <rect class="dog-leg" x="5" y="11" width="2" height="3" />
-    <rect class="dog-leg" x="9" y="11" width="2" height="3" />
-    <rect class="dog-tail" x="2" y="5" width="2" height="2" />
+    <rect fill="#f4a7b9" x="3" y="6" width="8" height="5" />
+    <rect fill="#f4a7b9" x="9" y="4" width="4" height="4" />
+    <rect fill="#ffd0da" x="12" y="5" width="3" height="2" />
+    <rect fill="#c45b74" x="14" y="5" width="1" height="1" />
+    <rect fill="#c45b74" x="13" y="6" width="1" height="1" />
+    <rect fill="#e07a92" x="8" y="3" width="2" height="2" />
+    <rect fill="#1a1a1a" x="11" y="5" width="1" height="1" />
+    <rect fill="#e07a92" x="4" y="11" width="2" height="3" />
+    <rect fill="#e07a92" x="8" y="11" width="2" height="3" />
+    <rect fill="#f4a7b9" x="1" y="6" width="2" height="2" />
 </svg>
 `;
 envContainer.appendChild(dogBody);
@@ -248,7 +249,14 @@ function walkDogRandomly() {
         dogIsWalking = false;
         
         // Occasionally bark with woodblock sound synthesis and visual speech bubble!
-        if (Math.random() > 0.5) {
+        if (Math.random() > 0.45) {
+            bonkGlass(newX + 24, newY + 10);
+            dogBody.animate([
+                { transform: dogBody.style.transform },
+                { transform: dogBody.style.transform + ' scale(1.18)' },
+                { transform: dogBody.style.transform }
+            ], { duration: 180, easing: 'ease-out' });
+        } else if (Math.random() > 0.35) {
             triggerDogBark(newX, newY);
         }
         
@@ -457,10 +465,12 @@ function setDuckState(state) {
     const keepLocked = document.body.classList.contains('locked');
     const keepUnlocked = document.body.classList.contains('unlocked');
     const keepBash = document.body.classList.contains('bash-open');
+    const keepMystery = document.body.classList.contains('mystery-open');
     document.body.className = '';
     if (keepLocked) document.body.classList.add('locked');
     if (keepUnlocked) document.body.classList.add('unlocked');
     if (keepBash) document.body.classList.add('bash-open');
+    if (keepMystery) document.body.classList.add('mystery-open');
     
     if (state === 'angry') {
         stopWandering(true, false);
@@ -518,8 +528,7 @@ function startThrowingBlocks() {
             easing: 'ease-in'
         }).onfinish = () => {
             block.remove();
-            createBigCrack(endX, endY);
-            playCrackSound();
+            bonkGlass(endX, endY);
         };
         
     }, 700);
@@ -540,45 +549,91 @@ function createCrack(x, y) {
     }, 1500);
 }
 
-const shatterTemplates = [
-    `<path d="M50 50 L20 10 M50 50 L10 40 M50 50 L30 80 M50 50 L80 90 M50 50 L90 30 M20 10 L40 0 M30 80 L10 100 M80 90 L100 70 M90 30 L100 10" stroke="white" stroke-width="1.5" fill="none" opacity="0.9" />
-     <path d="M50 50 L25 15 M50 50 L15 45 M50 50 L35 75 M50 50 L75 85 M50 50 L85 35" stroke="rgba(0,0,0,0.5)" stroke-width="2" fill="none" opacity="0.6" />
-     <circle cx="50" cy="50" r="4" fill="white" opacity="0.8" />
-     <circle cx="50" cy="50" r="6" fill="rgba(0,0,0,0.5)" opacity="0.5" />`,
-     
-    `<path d="M50 50 L10 20 L0 10 M50 50 L20 90 L10 100 M50 50 L80 100 L90 90 M50 50 L90 10 L100 0 L40 30 L20 10" stroke="white" stroke-width="1" fill="none" opacity="0.9" />
-     <path d="M50 50 L12 22 M50 50 L22 92 M50 50 L82 102 M50 50 L92 12" stroke="rgba(0,0,0,0.5)" stroke-width="3" fill="none" opacity="0.4" />`
-];
+function spiderCrackMarkup() {
+    let rays = '';
+    const count = 7 + Math.floor(Math.random() * 2);
+    for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.28;
+        const length = 28 + Math.random() * 18;
+        const x = 50 + Math.cos(angle) * length;
+        const y = 50 + Math.sin(angle) * length;
+        const kink = 0.35 + Math.random() * 0.25;
+        const bend = (Math.random() - 0.5) * 8;
+        const mx = 50 + Math.cos(angle) * length * kink + bend;
+        const my = 50 + Math.sin(angle) * length * kink;
+        rays += `M50 50 L${mx.toFixed(1)} ${my.toFixed(1)} L${x.toFixed(1)} ${y.toFixed(1)} `;
+        if (i % 2 === 0) {
+            const branch = angle + (Math.random() > 0.5 ? 0.55 : -0.55);
+            const bx = mx + Math.cos(branch) * (7 + Math.random() * 8);
+            const by = my + Math.sin(branch) * (7 + Math.random() * 8);
+            rays += `M${mx.toFixed(1)} ${my.toFixed(1)} L${bx.toFixed(1)} ${by.toFixed(1)} `;
+        }
+    }
+    return `
+        <circle cx="50" cy="50" r="22" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="0.35"/>
+        <path d="${rays}" stroke="rgba(30,48,72,0.55)" stroke-width="0.55" fill="none"/>
+        <path d="${rays}" stroke="rgba(255,255,255,0.95)" stroke-width="0.22" fill="none"/>
+        <circle cx="50" cy="50" r="2.2" fill="#fff"/>
+    `;
+}
+
+function throwGlassShards(x, y) {
+    for (let i = 0; i < 7; i++) {
+        const shard = document.createElement('div');
+        shard.className = 'glass-shard';
+        shard.style.left = x + 'px';
+        shard.style.top = y + 'px';
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 40 + Math.random() * 90;
+        particleContainer.appendChild(shard);
+        shard.animate([
+            { transform: 'translate(0,0) rotate(0deg) scale(1)', opacity: 1 },
+            { transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance + 30}px) rotate(${180 + Math.random() * 180}deg) scale(0.6)`, opacity: 0 }
+        ], { duration: 520 + Math.random() * 280, easing: 'cubic-bezier(.2,.7,.3,1)' }).onfinish = () => shard.remove();
+    }
+}
+
+function bonkGlass(x, y) {
+    createBigCrack(x, y);
+    throwGlassShards(x, y);
+    const flash = document.createElement('div');
+    flash.className = 'impact-flash';
+    flash.style.left = x + 'px';
+    flash.style.top = y + 'px';
+    particleContainer.appendChild(flash);
+    flash.animate([
+        { transform: 'scale(0.2)', opacity: 1 },
+        { transform: 'scale(6)', opacity: 0 }
+    ], { duration: 260, easing: 'ease-out' }).onfinish = () => flash.remove();
+    playCrackSound();
+}
 
 function createBigCrack(x, y) {
-    const size = 150 + Math.random() * 250; 
+    const existing = particleContainer.querySelectorAll('.glass-shatter');
+    if (existing.length > 1) existing[0].remove();
+    const size = 150 + Math.random() * 70;
     const crack = document.createElement('div');
     crack.className = 'glass-shatter';
-    crack.style.left = (x - size/2) + 'px';
-    crack.style.top = (y - size/2) + 'px';
+    crack.style.left = (x - size / 2) + 'px';
+    crack.style.top = (y - size / 2) + 'px';
     crack.style.width = size + 'px';
     crack.style.height = size + 'px';
-    
     const rot = Math.random() * 360;
-    
     crack.innerHTML = `
         <svg viewBox="0 0 100 100" style="width:100%; height:100%; overflow:visible;">
-            ${shatterTemplates[Math.floor(Math.random() * shatterTemplates.length)]}
+            ${spiderCrackMarkup()}
         </svg>
     `;
-    
     particleContainer.appendChild(crack);
-    
     crack.animate([
-        { transform: `rotate(${rot}deg) scale(0.1)`, opacity: 0 },
-        { transform: `rotate(${rot}deg) scale(1.1)`, opacity: 1 },
+        { transform: `rotate(${rot}deg) scale(0.15)`, opacity: 0.2 },
         { transform: `rotate(${rot}deg) scale(1)`, opacity: 1 }
-    ], {
-        duration: 150,
-        easing: 'ease-out'
-    }).onfinish = () => {
-        crack.style.transform = `rotate(${rot}deg) scale(1)`; 
+    ], { duration: 120, easing: 'ease-out' }).onfinish = () => {
+        crack.style.transform = `rotate(${rot}deg) scale(1)`;
     };
+    setTimeout(() => {
+        crack.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 900, fill: 'forwards' }).onfinish = () => crack.remove();
+    }, 1600);
 }
 
 function startFallingPetals() {
@@ -880,17 +935,19 @@ if (acceptDateBtn) {
 const welcomeOverlay = document.getElementById('welcome-overlay');
 const welcomeEnter = document.getElementById('welcome-enter');
 const welcomeBash = document.getElementById('welcome-bash');
+const welcomeMystery = document.getElementById('welcome-mystery');
 const gatePanel = document.getElementById('gate-panel');
 const passwordInput = document.getElementById('password-input');
 const loginBtn = document.getElementById('login-btn');
 const loginError = document.getElementById('login-error');
 
-function revealSite(openBash) {
+function revealSite(where) {
     document.body.classList.remove('locked');
     document.body.classList.add('unlocked');
     if (welcomeOverlay) welcomeOverlay.classList.add('hidden');
     playNotification();
-    if (openBash) openBirthdayBash();
+    if (where === true || where === 'bash') openBirthdayBash();
+    else if (where === 'mystery' || window.location.hash === '#mystery') openMystery();
 }
 
 function attemptLogin() {
@@ -931,6 +988,10 @@ if (welcomeEnter) {
 if (welcomeBash) {
     welcomeBash.addEventListener('click', () => revealSite(true));
     welcomeBash.addEventListener('mouseenter', playHoverSound);
+}
+if (welcomeMystery) {
+    welcomeMystery.addEventListener('click', () => revealSite('mystery'));
+    welcomeMystery.addEventListener('mouseenter', playHoverSound);
 }
 
 // ----------------------------------------------------
@@ -1203,7 +1264,204 @@ if (decreeBody) {
 window.addEventListener('hashchange', () => {
     if (window.location.hash === '#bash') openBirthdayBash();
     else if (document.body.classList.contains('bash-open')) closeBirthdayBash();
+    if (window.location.hash === '#mystery') openMystery();
+    else if (document.body.classList.contains('mystery-open')) closeMystery();
 });
+
+// ----------------------------------------------------
+// A LITTLE MYSTERY — daily hints, India time
+// ----------------------------------------------------
+function istTime(year, month, day, hour, minute) {
+    return Date.UTC(year, month - 1, day, hour, minute, 0) - (5.5 * 60 * 60 * 1000);
+}
+
+const GIFT_HINTS = [
+    {
+        at: istTime(2026, 11, 4, 0, 0),
+        when: 'Wednesday, 4 November',
+        title: 'A little extra grace',
+        text: 'My dear Sharon, this is not a ring and not a dress. It is a little extra grace. When it is yours, you may feel a bit more elegant, a bit more sure of yourself, and just a little prouder when you enter a room.'
+    },
+    {
+        at: istTime(2026, 11, 5, 0, 0),
+        when: 'Thursday, 5 November',
+        title: 'Cream, black, and a wink',
+        text: 'Think of warm cream and deep black together. Little black dots on something pale and pretty. It is classic, like an old photograph, but it also has a playful wink. That mix feels very you.'
+    },
+    {
+        at: istTime(2026, 11, 6, 0, 0),
+        when: 'Friday, 6 November',
+        title: 'For a dressed-up night',
+        text: 'It finishes a pretty outfit. It gives you a little extra height, and it is meant for a day when you want to look unforgettable. You will notice it most when you are dressed up and ready to be seen.'
+    },
+    {
+        at: istTime(2026, 11, 7, 8, 0),
+        when: 'Saturday morning, 7 November',
+        title: 'The mystery ends here',
+        reveal: true,
+        text: 'It is a beautiful pair of heels. Cream, with black polka dots, black tips at the toes, a thin strap around the ankle, and a steady block heel. Vintage, classy, and a little bit playful. I chose them so you can feel as beautiful and special as you are to me.'
+    }
+];
+
+const mysteryScreen = document.getElementById('screen-mystery');
+const mysteryCards = document.getElementById('mystery-cards');
+const mysteryFinale = document.getElementById('mystery-finale');
+const mysteryStatus = document.getElementById('mystery-status');
+const mysteryCountdown = document.getElementById('mystery-countdown');
+const heelFrame = document.getElementById('heel-frame');
+const heelTitle = document.getElementById('heel-title');
+let mysteryRenderedStage = -1;
+
+function mysteryStage(now) {
+    let stage = 0;
+    GIFT_HINTS.forEach((hint) => {
+        if (now >= hint.at) stage += 1;
+    });
+    return stage;
+}
+
+function nextHint(now) {
+    return GIFT_HINTS.find((hint) => hint.at > now) || null;
+}
+
+function formatWait(ms) {
+    const total = Math.max(0, Math.floor(ms / 1000));
+    const days = Math.floor(total / 86400);
+    const hours = Math.floor((total % 86400) / 3600);
+    const mins = Math.floor((total % 3600) / 60);
+    const secs = total % 60;
+    const parts = [];
+    if (days) parts.push(days + (days === 1 ? ' day' : ' days'));
+    parts.push(String(hours).padStart(2, '0') + 'h');
+    parts.push(String(mins).padStart(2, '0') + 'm');
+    parts.push(String(secs).padStart(2, '0') + 's');
+    return parts.join(' ');
+}
+
+function renderMystery(now) {
+    const stage = mysteryStage(now);
+    if (!mysteryCards || stage === mysteryRenderedStage) return;
+    mysteryRenderedStage = stage;
+
+    if (heelFrame) heelFrame.dataset.stage = String(stage);
+    if (heelTitle) {
+        heelTitle.textContent = stage >= 4 ? 'Cream and black heels' : 'A hidden surprise';
+    }
+
+    mysteryCards.innerHTML = GIFT_HINTS.map((hint, index) => {
+        const open = index < stage;
+        if (!open) {
+            return `
+                <article class="hint-card is-locked">
+                    <p class="hint-when">${hint.when}</p>
+                    <h2>Still sealed</h2>
+                    <p>This hint is waiting. It will open on its own. No peeking.</p>
+                </article>
+            `;
+        }
+        const fresh = index === stage - 1 ? ' is-fresh' : '';
+        return `
+            <article class="hint-card is-open${fresh}">
+                <p class="hint-when">${hint.when}</p>
+                <h2>${hint.title}</h2>
+                <p>${hint.text}</p>
+            </article>
+        `;
+    }).join('');
+
+    if (mysteryFinale) {
+        if (stage >= 4) {
+            mysteryFinale.classList.remove('hidden');
+            mysteryFinale.innerHTML = `
+                <p class="bash-kicker">Saturday morning</p>
+                <h2>The Mystery Ends Here ❤️</h2>
+                <p>My dear Sharon, I wanted to give you something that makes you feel as beautiful and special as you are. These heels are for the days you want a little extra grace, and for every ordinary day too.</p>
+                <button id="surprise-like" class="pixel-btn pink-btn" type="button">So… do you like your surprise? ❤️</button>
+                <p id="surprise-reply" class="surprise-reply hidden">I hoped you would. Wear them when you want the room to notice, and know I was thinking of your smile.</p>
+            `;
+        } else {
+            mysteryFinale.classList.add('hidden');
+            mysteryFinale.innerHTML = '';
+        }
+    }
+}
+
+function updateMysteryClock() {
+    const now = Date.now();
+    renderMystery(now);
+    const upcoming = nextHint(now);
+    if (!mysteryStatus || !mysteryCountdown) return;
+    if (!upcoming) {
+        mysteryStatus.textContent = 'Every hint is open.';
+        mysteryCountdown.innerHTML = '';
+        return;
+    }
+    const morning = upcoming.when.indexOf('morning') !== -1;
+    mysteryStatus.textContent = morning
+        ? 'The last surprise opens Saturday morning, India time.'
+        : 'The next hint opens at midnight, India time.';
+    mysteryCountdown.innerHTML = `
+        <span class="mystery-wait-label">Opens ${upcoming.when}</span>
+        <strong>${formatWait(upcoming.at - now)}</strong>
+    `;
+}
+
+function openMystery() {
+    if (!mysteryScreen || !document.body.classList.contains('unlocked')) return;
+    mysteryScreen.classList.remove('hide');
+    mysteryScreen.classList.add('show');
+    document.body.classList.add('mystery-open');
+    if (window.location.hash !== '#mystery') {
+        history.pushState({ mystery: true }, '', '#mystery');
+    }
+    mysteryRenderedStage = -1;
+    updateMysteryClock();
+    playSparkleSound();
+}
+
+function closeMystery() {
+    if (!mysteryScreen) return;
+    mysteryScreen.classList.add('hide');
+    mysteryScreen.classList.remove('show');
+    document.body.classList.remove('mystery-open');
+    if (window.location.hash === '#mystery') {
+        history.pushState({ mystery: false }, '', window.location.pathname + window.location.search);
+    }
+    playPopSound();
+}
+
+const mysteryLauncher = document.getElementById('mystery-launcher');
+const mysteryBack = document.getElementById('mystery-back');
+const mysteryOption = document.getElementById('mystery-option');
+
+if (mysteryLauncher) {
+    mysteryLauncher.addEventListener('click', openMystery);
+    mysteryLauncher.addEventListener('mouseenter', playHoverSound);
+}
+if (mysteryBack) {
+    mysteryBack.addEventListener('click', closeMystery);
+    mysteryBack.addEventListener('mouseenter', playHoverSound);
+}
+if (mysteryOption) {
+    mysteryOption.addEventListener('click', () => {
+        if (dropdownMenu) dropdownMenu.classList.add('hidden');
+        openMystery();
+    });
+}
+if (mysteryFinale) {
+    mysteryFinale.addEventListener('click', (event) => {
+        const button = event.target.closest('#surprise-like');
+        if (!button) return;
+        const reply = document.getElementById('surprise-reply');
+        if (reply) reply.classList.remove('hidden');
+        button.disabled = true;
+        playFanfare();
+        for (let i = 0; i < 28; i++) setTimeout(createFloatingHeart, i * 60);
+    });
+}
+
+updateMysteryClock();
+setInterval(updateMysteryClock, 1000);
 
 updateBirthdayCountdown();
 setInterval(updateBirthdayCountdown, 1000);
